@@ -1,0 +1,30 @@
+LONDON IS — automatic results checking update
+
+Upload ONLY server.mjs to the ROOT of your existing GitHub repository, replacing the existing server.mjs.
+Do NOT delete index.html, package.json or README.md.
+
+GitHub mobile browser:
+1. Open cryptpnk-dot/London-is and select server.mjs.
+2. Use the file menu / pencil editor to replace the file content (or use GitHub's upload files interface and confirm overwrite if offered).
+3. Commit the change to main.
+4. Render should redeploy if linked to GitHub; otherwise trigger a manual deploy.
+
+Render environment variables required:
+ADMIN_PASSWORD = your secret password, at least 12 characters
+SESSION_SECRET = a random secret, at least 32 characters
+FOOTBALL_DATA_TOKEN = your football-data.org API token
+RESULTS_POLL_MINUTES = 60 (optional; minimum 15)
+OPENAI_API_KEY = optional for AI-written editorial drafts
+NODE_ENV = production (recommended for HTTPS hosting)
+
+No secrets should be committed to GitHub. Add environment variables inside Render instead.
+The server must remain running for scheduled checks to execute; a sleeping free-tier instance will not poll while asleep.
+
+WHAT CHANGES
+- On startup, waits 10 seconds then checks completed Premier League results.
+- Checks again every 60 minutes while the server is running.
+- Prevents overlapping manual/scheduled checks.
+- Only queues drafts; never automatically publishes a new verdict.
+- Existing homepage and editorial interface remain unchanged.
+
+NOTE: Existing rules only draft for London derbies or victories by 3+ goals over non-London clubs. The six-club list is fixed. Data storage is still local data.json and requires persistent disk storage to survive redeploys.
